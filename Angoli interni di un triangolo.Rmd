@@ -1,0 +1,52 @@
+---
+title: Esperienza di laboratorio I - Misura degli angoli interni di un triangolo
+author:
+  - name: Marco Rinaldo Alessio
+    affil: 1
+affiliation:
+  - num: 1
+    address: |
+      Università Ca' Foscari di Venezia - 
+      Dipartimento di scienze molecolari e nanosistemi
+      Campus scientifico via Torino - Via Torino 155, 30170 Venezia Mestre
+    email: 895438@stud.unive.it
+# front matter
+simplesummary: |
+  A Simple summary goes here.
+abstract: |
+  A single paragraph of about 200 words maximum. For research articles, 
+  abstracts should give a pertinent overview of the work. We strongly encourage
+  authors to use the following style of structured abstracts, but without 
+  headings: 1) Background: Place the question addressed in a broad context and
+  highlight the purpose of the study; 2) Methods: Describe briefly the main
+  methods or treatments applied; 3) Results: Summarize the article's main 
+  findings; and 4) Conclusion: Indicate the main conclusions or interpretations. 
+  The abstract should be an objective representation of the article, it must not 
+  contain results which are not presented and substantiated in the main text and 
+  should not exaggerate the main conclusions.
+# back matter
+output: 
+  rticles::mdpi_article:
+---
+# Introduzione
+
+a
+
+# Materiali e metodi
+
+b
+
+# Risultati
+
+
+# Discussion
+
+c
+
+# Conclusion
+
+d
+
+# Patents
+
+e
