@@ -1,0 +1,86 @@
+---
+title: "Relazione laboratorio - Esperienza angoli interni di un triangolo"
+author: "Marco Rinaldo Alessio"
+date: "2023-10-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+# install.packages("readxl")
+library(readxl)
+tableData = read_excel("data.xlsx")
+attach(tableData)
+```
+
+```{r}
+View(tableData)
+```
+
+Vi sono sicuramente delle misure anomale nel campionamento dei dati.
+Per prima cosa procediamo con un'analisi qualitativa dei dati:
+
+```{r}
+plot(TOT)
+```
+Vi sono senza ombra di dubbio almeno 5 dati molto disallineati rispetto agli altri, questi possono essere causa di un qualche tipo di errore casuale:
+
+1) lettura scala gradi sbagliata
+2) misura dello stesso angolo più volte
+3) misura angoli di due triangoli diversi
+
+Per questo questi valori possono essere rigettati, si può però anche procedere con la verifica utilizzando il criterio di Chauvenet: 
+
+* calcoliamo prima media e deviazione standard
+
+$$
+\bar{x} = \frac{\sum_{i=1}^{N}x_i}{N} \\
+\sigma_x = \sqrt{\frac{\sum_{i=1}^{N}(x_i-\bar{x})^2}{N-1}}
+$$
+
+```{r}
+media = mean(TOT)
+devS = sd(TOT)
+```
+
+I due dati più estremi sono entrambi 140.3°, la loro discrepanza sarà:
+$$
+\frac{|x_{sus}-\bar{x}|}{\sigma_x}
+$$
+```{r}
+disc = abs(140.3-media)/devS
+disc
+```
+che indica di quante deviazioni standard $\sigma_x$ differisce il dato sospetto $x_{sus}$ dalla media $\bar{x}$.
+
+```{r}
+# 1-pnorm(140.3, media, devS, lower.tail = FALSE)
+1-pnorm(disc)
+```
+Viene un numero di diversi ordini di grandezza più piccolo rispetto al limite di $\frac{1}{2}$ utilizzato dal criterio di Chauvenet. Possiamo quindi rigettare con una certa tranquillità i due dati estremi. Analogamente accade per gli altri 3 dati sospetti (rispettivamente 160.1, 160.3, 161.0), le cui probabilità sono rispettivamente:
+
+```{r}
+pnorm(160.1, media, devS)
+pnorm(160.3, media, devS)
+pnorm(161.0, media, devS)
+```
+Anch'esse distanti dallo 0.5 di Chauvenet. Possono essere rigettati.
+
+NB: il valore massimo di 185.4 non menzionato sopra ma che evidentemente si discosta dagli altri, con una prima applicazione del criterio di Chauvenet non avrebbe motivo per essere rigettato.
+
+```{r}
+1-pnorm(185.4, media, devS)
+```
+Questo perché occore ricalcolare $\bar{x}$ e $\sigma_x$ in funzione del campione una volta esclusi i dati riconosciuti errati:
+
+```{r}
+trueVal = TOT[pnorm(TOT, media, devS)>0.5]
+length(trueVal)
+trueVal = TOT[1-pnorm(TOT, media, devS)<0.5]
+length(trueVal)
+media = mean(trueVal)
+devS = sd(trueVal)
+
+1-pnorm(185.4, media, devS)
+```
+
