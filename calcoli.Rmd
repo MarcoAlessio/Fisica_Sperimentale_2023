@@ -1,0 +1,64 @@
+---
+title: "calcoli"
+author: "Marco Rinaldo Alessio"
+date: "2024-02-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(readxl)
+tableData = data.frame(read_excel("trianglesData.xlsx"))
+View(tableData)
+```
+
+```{r}
+# Plotto subito l'intero campione per una prima analisi visiva
+listData = tableData$TOT
+View(listData)
+plot(listData, ylab = "Valore misura", xlab = "Numero misurazione")
+```
+
+```{r}
+# Elimino subito i dati più estremi
+trueData = listData[listData<182 & listData>178]
+View(trueData)
+```
+
+```{r}
+# Calcolo una prima media e deviazione standard
+media = mean(trueData)
+devS = sd(trueData)
+media
+devS
+```
+
+```{r}
+# Criterio di Chauvenet (pg.59 libro di testo)
+xsos = 179.6
+tsos = abs(xsos - media)/devS
+tsos #da cercare sulla tabella pg.100 
+```
+```{r}
+(1-0.9692)*length(trueData) #(1 - valore tabellato)*n° misurazioni totali
+```
+
+
+```{r}
+# Elimino eventualmente xsos se l'ultimo valore è <0.5
+# trueData = trueData[trueData!=xsos]
+sort(trueData)
+```
+```{r}
+# Calcolo la media e deviazione standard definitiva
+media = mean(trueData)
+devS = sd(trueData)
+devSM = devS/sqrt(length(trueData))
+media
+devS
+devSM
+```
+
